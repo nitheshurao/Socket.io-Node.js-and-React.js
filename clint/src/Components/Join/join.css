@@ -1,0 +1,32 @@
+.JoinOuterConatainer{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    align-items: center;
+    background-color: rgb(212, 191, 191);
+}
+.joinInnerContainer{
+    width: 20%;
+}
+.joinInput{
+    border-radius: 0;
+    padding: 15px 20px;
+    width: 100%;
+}
+.heading{
+    color: blanchedalmond;
+    font-size: 2,5em;
+    padding-bottom: 10px;
+    border-bottom: 2px solid wheat;
+}
+.button{
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    width:100%;
+}
