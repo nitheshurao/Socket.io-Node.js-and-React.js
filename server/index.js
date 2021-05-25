@@ -22,9 +22,27 @@ io.on('connection', (socket) => {
 
     socket.on('join', ({ name, room }, callback) => {
      
-        const {error,user} =adduser({id:socket.id, name, room});
+        const {error,users} =adduser({id:socket.id, name, room});
+
+        if(error) return callback(error);
+
+socket.emit('message',{users:'admin', text: `${users.name},welcome to the room ${users.room}`});
+socket.broadcast.to(users.room).emit('message', {users:'admin',text:`${users.name}, has joined !`});
+
+
+        socket.join(users.room);
+
+        callback();
        
     })
+socket.on('sendMessage', (message,callback)=>{
+const users =getuser(socket.id);
+
+io.to(users.room).emit('message',{users:users.name,text:message});
+
+callback();
+})
+
     socket.on('disconnect', () => {
         console.log('user had left!!');
     })
