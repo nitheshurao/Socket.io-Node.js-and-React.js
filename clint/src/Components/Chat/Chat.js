@@ -8,12 +8,13 @@ let socket;
 const Chat = ({ location }) => {
 
     const [name, setName] = useState('');
-    const [room, setRoom] = useState(' ');
-    const [message, setMessage] = useState();
+    const [room, setRoom] = useState('');
+    const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const endpoint = 'localhost:5000';
     useEffect(() => {
-        const { name, room } = queryString.parse(location.search);
+        const { name } = queryString.parse(location.search);
+        const { room } = queryString.parse(location.search);
 
         console.log(name, room);
 
@@ -34,16 +35,16 @@ const Chat = ({ location }) => {
     }, [endpoint, location.search]);
 
     useEffect(() => {
-        socket.on('message', (messgae) => {
-            setMessages([...messages, messgae]);
+        socket.on('message', (message) => {
+            setMessages([...messages, message]);
         })
     }, [messages]);
 
     const sendMessage = (event) => {
         event.preventDefault();
-        
+
         if (message) {
-            socket.emit('sendMessage', message, () => setMessage(''))
+            socket.emit('sendMessage', message, () => setMessage(''));
         }
     }
 

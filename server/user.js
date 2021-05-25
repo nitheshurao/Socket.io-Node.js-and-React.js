@@ -1,4 +1,4 @@
-const user=[];
+const users=[];
 
 const adduser =({id,name,room})=>{
 //jsmastry= jsmastry
@@ -7,27 +7,27 @@ room= room.trim().toLowerCase();
 
 
 
-const existingutse =user.find((user)=>user.room === room && user.name ===name); 
+const existingutse =users.find((user)=>user.room === room && user.name ===name); 
 if(existingutse){
     return{error: 'username is taken'};
 }
-const users={id,name,room};
-user.push(users);
+const user={id,name,room};
+users.push(user);
 
 return {user}
 }
 
 const removeuser =(id)=>{
-    const index = user.findIndex((users) => users.id ===id)
+    const index = users.findIndex((user) => user.id ===id)
 
     if(index !==-1){
-        return user.splice(index,1)[0];
+        return users.splice(index,1)[0];
     }
 
 }
 
-const getuser =(id)=>user.find((users) =>  users.id === id)  ;
+const getuser =(id)=>users.find((user) =>  user.id === id)  ;
 
-const getuserinroom=(room) => user.filter((users) => users.room === room);
+const getuserinroom=(room) => users.filter((user) => user.room === room);
 
 module.exports = {adduser, removeuser,getuser,getuserinroom};
