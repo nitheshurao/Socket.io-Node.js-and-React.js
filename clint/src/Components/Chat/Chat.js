@@ -3,12 +3,16 @@ import queryString from 'query-string';
 import io from 'socket.io-client';
 
 import './chat.css';
+import InfoBar from '../InfoBar/InfoBar';
+import IInput from '../Input/IInput';
+import Messages from '../Messages/Messages';
 
 let socket;
 const Chat = ({ location }) => {
 
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
+
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const endpoint = 'localhost:5000';
@@ -20,9 +24,11 @@ const Chat = ({ location }) => {
 
         socket = io(endpoint);
         setName(name);
+
         setRoom(room);
+
         console.log(socket)
-        socket.emit('join', { name, room }, ({ error }) => {
+        socket.emit('join', { name, room }, () => {
             // alert(error);
 
         })
@@ -36,12 +42,13 @@ const Chat = ({ location }) => {
 
     useEffect(() => {
         socket.on('message', (message) => {
-            setMessages([...messages, message]);
-        })
-    }, [messages]);
+            setMessages(messages => [...messages, message]);
+        });
 
-    const sendMessage = (event) => {
-        event.preventDefault();
+    }, []);
+
+    const sendMessage = (value) => {
+        value.preventDefault();
 
         if (message) {
             socket.emit('sendMessage', message, () => setMessage(''));
@@ -53,9 +60,23 @@ const Chat = ({ location }) => {
     return (
         <div className="outerContacner">
             <div className="conatainer">
-                <input value={message}
-                    onChange={(event) => setMessage(event.target.value)}
-                    onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null} />
+                <InfoBar room={room} />
+                <Messages messages={messages} name={name} />
+                {/* <IInput message={message} setMessage={setMessage} sendMessage={setMessage} /> */}
+                {/* 
+ */}
+                <form className="form">
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Type a message..."
+                        value={message}
+                        onChange={({ target: { value } }) => setMessage(value)}
+                        onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}
+                    />
+                    <button className="sendbutton" onClick={e => sendMessage(e)}>Send</button>
+                </form>
+                {/*  */}
             </div>
         </div>
     )
